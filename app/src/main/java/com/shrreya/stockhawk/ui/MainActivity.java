@@ -1,9 +1,11 @@
-package com.udacity.stockhawk.ui;
+package com.shrreya.stockhawk.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -19,10 +21,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.udacity.stockhawk.R;
-import com.udacity.stockhawk.data.Contract;
-import com.udacity.stockhawk.data.PrefUtils;
-import com.udacity.stockhawk.sync.QuoteSyncJob;
+import com.shrreya.stockhawk.R;
+import com.shrreya.stockhawk.data.Contract;
+import com.shrreya.stockhawk.data.PrefUtils;
+import com.shrreya.stockhawk.sync.QuoteSyncJob;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onClick(String symbol) {
         Timber.d("Symbol clicked: %s", symbol);
+        Uri stockUri = Contract.Quote.makeUriForStock(symbol);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.setData(stockUri);
+        startActivity(intent);
     }
 
     @Override
@@ -182,6 +188,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             PrefUtils.toggleDisplayMode(this);
             setDisplayModeMenuItemIcon(item);
             adapter.notifyDataSetChanged();
+            getWindow().getDecorView().findViewById(R.id.action_change_units)
+                    .announceForAccessibility(
+                            String.format(getString(R.string.display_mode_change_cd),
+                                    PrefUtils.getDisplayMode(this))
+                    );
             return true;
         }
         return super.onOptionsItemSelected(item);

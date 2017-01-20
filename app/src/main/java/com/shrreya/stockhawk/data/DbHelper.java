@@ -1,10 +1,10 @@
-package com.udacity.stockhawk.data;
+package com.shrreya.stockhawk.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.udacity.stockhawk.data.Contract.Quote;
+import com.shrreya.stockhawk.data.Contract.Quote;
 
 
 class DbHelper extends SQLiteOpenHelper {
@@ -27,6 +27,9 @@ class DbHelper extends SQLiteOpenHelper {
                 + Quote.COLUMN_ABSOLUTE_CHANGE + " REAL NOT NULL, "
                 + Quote.COLUMN_PERCENTAGE_CHANGE + " REAL NOT NULL, "
                 + Quote.COLUMN_HISTORY + " TEXT NOT NULL, "
+                + Quote.COLUMN_NAME + " TEXT NOT NULL, "
+                + Quote.COLUMN_HIGHEST + " REAL NOT NULL, "
+                + Quote.COLUMN_LOWEST + " REAL NOT NULL, "
                 + "UNIQUE (" + Quote.COLUMN_SYMBOL + ") ON CONFLICT REPLACE);";
 
         db.execSQL(builder);
